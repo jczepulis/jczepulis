@@ -1,0 +1,15 @@
+#include <SoftwareSerial.h>
+
+
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+   
+  if (Serial.available()>0)   {
+      float x = Serial.read();
+      Serial.println(x);
+      
+  }
+}
