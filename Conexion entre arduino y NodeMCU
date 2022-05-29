@@ -1,1 +1,20 @@
+#include <SoftwareSerial.h>
+SoftwareSerial Trans(2, 3);  //Pines para Rx y Tx.
+int resultado;           
+int x=0;        
+ 
+void setup()
+{
+  Serial.begin(115200);
+  Trans.begin(115200);       //Velocidad de envío para la transmisión al NodeMCU.
+}
 
+void loop()
+{
+  resultado= x++; 
+  Serial.print("Peso: ");
+  Serial.println(resultado);        //Imprime en el monitor serial el valor de la variable resultado                                            
+  delay(1000);
+  Trans.print(x);                //Transmisión del valor a NodeMCU.
+  delay(1000);  
+}
