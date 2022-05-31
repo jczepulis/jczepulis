@@ -14,7 +14,6 @@ void loop()
   resultado= x++; 
   Serial.print("Peso: ");
   Serial.println(resultado);        //Imprime en el monitor serial el valor de la variable resultado                                            
-  delay(1000);
-  Trans.print(x);                //Transmisión del valor a NodeMCU.
+  Trans.print(resultado);                //Transmisión del valor a NodeMCU.
   delay(1000);  
 }
