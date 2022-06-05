@@ -1,0 +1,57 @@
+#include <SoftwareSerial.h>
+#include <ESP8266WiFi.h>
+SoftwareSerial mySerial(2, 3);  //Pines para Rx y Tx.
+
+const char* ssid = "GIGARED NATO";
+const char* password = "00422420843";
+const char* server = "api.thingspeak.com";
+
+WiFiClient client;
+
+void setup() {
+  Serial.begin(115200);
+  mySerial.begin(115200);
+  WiFi.begin(ssid, password);
+  delay(10);
+
+  Serial.println();
+  Serial.print("Connecting: ");
+  Serial.println(ssid);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+}
+
+void loop() {
+
+  /* if (Serial.available() > 0)   {
+     float x = Serial.read();
+     Serial.println(x);*/
+  while (mySerial.available() > 0)
+  {
+    char x = mySerial.read();
+    Serial.println(x);
+
+
+    if (client.connect(server, 80)) {
+      int x = mySerial.read();
+      String apiKey = "CJM5CHHQLK598T65";
+      String body = "field1=" + String(x);
+
+      client.print("POST /update HTTP/1.1\n");
+      client.print("Host: api.thingspeak.com\n");
+      client.print("Connection: close\n");
+      client.print("X-THINGSPEAKAPIKEY: " + apiKey + "\n");
+      client.print("Content-Type: application/x-www-form-urlencoded\n");
+      client.print("Content-Length: ");
+      client.print(body.length());
+      client.print("\n\n");
+      client.print(body);
+      client.print("\n\n");
+    }
+    client.stop();
+    delay(2000);
+  }
+}
